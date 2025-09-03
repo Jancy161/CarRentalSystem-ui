@@ -35,7 +35,7 @@ export default function Navbar() {
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-            {!authed && (
+           {/*} {!authed && (
               <>
                 <li className="nav-item"><NavLink to="/register" className="nav-link">Register</NavLink></li>
                 <li className="nav-item"><NavLink to="/login" className="nav-link">Login</NavLink></li>
@@ -49,7 +49,28 @@ export default function Navbar() {
             )}
             {authed && (
               <li className="nav-item"><button onClick={handleLogout} className="btn btn-outline-light ms-2">Logout</button></li>
-            )}
+            )}*/}
+            {authed && (
+  <>
+    <li className="nav-item">
+      <NavLink to="/profile" className="nav-link">Profile</NavLink>
+    </li>
+    {role === "User" && (
+      <li className="nav-item">
+        <NavLink to="/user" className="nav-link">User Dashboard</NavLink>
+      </li>
+    )}
+    {role === "Admin" && (
+      <li className="nav-item">
+        <NavLink to="/admin" className="nav-link">Admin Dashboard</NavLink>
+      </li>
+    )}
+    <li className="nav-item">
+      <button onClick={handleLogout} className="btn btn-outline-light ms-2">Logout</button>
+    </li>
+  </>
+)}
+
           </ul>
         </div>
       </div>

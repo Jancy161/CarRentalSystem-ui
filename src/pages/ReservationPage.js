@@ -45,11 +45,11 @@ export default function ReservationPage() {
           <input type="number" className="form-control" name="reservationId" value={form.reservationId} onChange={onChange} min={1} required />
         </div>
         <div className="col-md-4">
-          <label className="form-label">User ID (1-99)</label>
+          <label className="form-label">User ID (1)</label>
           <input type="number" className="form-control" name="userId" value={form.userId} onChange={onChange} min={1} max={99} required />
         </div>
         <div className="col-md-4">
-          <label className="form-label">Car ID (5-99)</label>
+          <label className="form-label">Car ID (5)</label>
           <input type="number" className="form-control" name="carId" value={form.carId} onChange={onChange} min={5} max={99} required />
         </div>
         <div className="col-md-6">

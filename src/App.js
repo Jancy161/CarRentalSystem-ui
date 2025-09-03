@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import UserProfile from "./pages/UserProfile";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -26,7 +26,14 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cars" element={<CarListing />} />
-
+          <Route
+  path="/profile"
+  element={
+    <ProtectedRoute roles={["User", "Admin"]}>
+      <UserProfile />
+    </ProtectedRoute>
+  }
+/>
           {/* Protected routes (requires token) */}
           <Route
             path="/reserve"

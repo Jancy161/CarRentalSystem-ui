@@ -21,7 +21,14 @@ export const logout = () => {
   localStorage.removeItem("email");
   localStorage.removeItem("role");
 };
-
+/*export const getAuthHeader = () => {
+  const token = localStorage.getItem("token");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+}; */
 export const isAuthenticated = () => !!localStorage.getItem("token");
 
 export const getRole = () => localStorage.getItem("role");

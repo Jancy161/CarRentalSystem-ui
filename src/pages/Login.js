@@ -22,6 +22,8 @@ export default function Login() {
       const users = await fetchUserByEmail(email);
       const role = users?.[0]?.role || "User";
       localStorage.setItem("role", role);
+      //localStorage.setItem("token", res.data.token);
+
       setMsg({ type: "success", text: "Logged in" });
       navigate(role === "Admin" ? "/admin" : "/user");
     } catch (err) {

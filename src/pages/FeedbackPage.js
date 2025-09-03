@@ -38,8 +38,8 @@ export default function FeedbackPage() {
 
       <form onSubmit={submit} className="row g-3 mb-4">
         <div className="col-md-2"> <label className="form-label">Feedback ID</label><input className="form-control" type="number" name="feedbackId" value={form.feedbackId} onChange={onChange} min={1} required /></div>
-        <div className="col-md-2"><label className="form-label">User ID</label><input className="form-control" type="number" name="userId" value={form.userId} onChange={onChange} min={1} max={99} required /></div>
-        <div className="col-md-2"> <label className="form-label">Car ID</label><input className="form-control" type="number" name="carId" value={form.carId} onChange={onChange} min={5} max={99} required /></div>
+        <div className="col-md-2"><label className="form-label">User ID</label><input className="form-control" type="number" name="userId" value={form.userId} onChange={onChange} min={1}  required /></div>
+        <div className="col-md-2"> <label className="form-label">Car ID</label><input className="form-control" type="number" name="carId" value={form.carId} onChange={onChange} min={5}  required /></div>
        { /*<div className="col-md-2">
           <select className="form-select" name="rating" value={form.rating} onChange={onChange}>
             {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
