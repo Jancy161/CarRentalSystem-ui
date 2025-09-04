@@ -24,14 +24,15 @@ export default function CarListing() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid py-4" style={{
+          backgroundColor: '#ddecddff',}}>
       <h2>Available Cars</h2>
       <form className="row g-2 mb-3" onSubmit={search}>
         <div className="col-auto">
           <input className="form-control" placeholder="Search by brand (e.g. Toyota)" value={brand} onChange={(e)=>setBrand(e.target.value)} />
         </div>
         <div className="col-auto">
-          <button className="btn btn-outline-primary" disabled={loading}>Search</button>
+          <button className="btn btn-outline-success" disabled={loading}>Search</button>
         </div>
       </form>
 

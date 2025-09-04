@@ -14,11 +14,18 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-success bg-success">
       <div className="container">
         <NavLink className="navbar-brand d-flex align-items-center" to="/">
-          <img src={logo} alt="RoadReady" width="32" height="32" className="me-2" />
-          RoadReady
+         <img 
+    src={logo} 
+    alt="RoadReady" 
+    width="50" 
+    height="40" 
+    className="me-2 rounded-circle" 
+    style={{ objectFit: "cover" }} 
+  />
+  RoadReady
         </NavLink>
         <button
           className="navbar-toggler"
@@ -35,7 +42,7 @@ export default function Navbar() {
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-           {/*} {!authed && (
+            {!authed && (
               <>
                 <li className="nav-item"><NavLink to="/register" className="nav-link">Register</NavLink></li>
                 <li className="nav-item"><NavLink to="/login" className="nav-link">Login</NavLink></li>
@@ -48,9 +55,15 @@ export default function Navbar() {
               <li className="nav-item"><NavLink to="/admin" className="nav-link">Admin Dashboard</NavLink></li>
             )}
             {authed && (
+            <>
+              
+              <li className="nav-item">
+              <NavLink to="/profile" className="nav-link">Profile</NavLink>
+              </li>
               <li className="nav-item"><button onClick={handleLogout} className="btn btn-outline-light ms-2">Logout</button></li>
-            )}*/}
-            {authed && (
+            </>
+            )}
+            {/*{authed && (
   <>
     <li className="nav-item">
       <NavLink to="/profile" className="nav-link">Profile</NavLink>
@@ -66,10 +79,10 @@ export default function Navbar() {
       </li>
     )}
     <li className="nav-item">
-      <button onClick={handleLogout} className="btn btn-outline-light ms-2">Logout</button>
+      <button onClick={handleLogout} className="btn btn-outline-dark ms-2">Logout</button>
     </li>
   </>
-)}
+)}*/}
 
           </ul>
         </div>

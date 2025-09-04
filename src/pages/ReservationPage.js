@@ -4,10 +4,11 @@ import { addReservation } from "../services/reservationService";
 
 export default function ReservationPage() {
   const location = useLocation();
+  const user = location.state?.user;
   const car = location.state?.car;
   const [form, setForm] = useState({
     reservationId: 1,
-    userId: 1,
+    userId:user?.userId | 1,
     carId: car?.carId || 5,
     pickupDate: "",
     dropoffDate: "",
@@ -46,11 +47,11 @@ export default function ReservationPage() {
         </div>
         <div className="col-md-4">
           <label className="form-label">User ID (1)</label>
-          <input type="number" className="form-control" name="userId" value={form.userId} onChange={onChange} min={1} max={99} required />
+          <input type="number" className="form-control" name="userId" value={form.userId} onChange={onChange} min={1}  required />
         </div>
         <div className="col-md-4">
           <label className="form-label">Car ID (5)</label>
-          <input type="number" className="form-control" name="carId" value={form.carId} onChange={onChange} min={5} max={99} required />
+          <input type="number" className="form-control" name="carId" value={form.carId} onChange={onChange} min={5}  required />
         </div>
         <div className="col-md-6">
           <label className="form-label">Pickup Date (MM/DD/YYYY)</label>

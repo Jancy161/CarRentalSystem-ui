@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.js
 import React, { useEffect, useState } from "react";
 import { addCar, updateCar, deleteCar, getAllCars } from "../services/carService";
-import { getAllUsers } from "../services/userService";
+import { getAllUsers, fetchUserById, deleteUser, getUserByName} from "../services/userService";
 import { getAllReservations, getByReservationGreaterThan } from "../services/reservationService";
 import { getAllPayments, getByMethodAndStatus } from "../services/paymentService";
 
@@ -9,6 +9,9 @@ export default function AdminDashboard() {
   const [cars, setCars] = useState([]);
   const [carForm, setCarForm] = useState({ carId: 5, brand: "", model: "", pricePerDay: 1000, availability: "AVAILABLE" });
   const [users, setUsers] = useState([]);
+  const [searchId, setSearchId] = useState("");
+  const [searchName, setSearchName] = useState("");
+
   const [reservations, setReservations] = useState([]);
   const [payments, setPayments] = useState([]);
   const [msg, setMsg] = useState(null);
@@ -66,13 +69,14 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container-fluid py-4" style={{
+          backgroundColor: '#ddecddff'}}>
       <h2 className="mb-3">Admin Dashboard</h2>
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
 
       <div className="card mb-4">
         <div className="card-body">
-          <h5 className="card-title">Manage Cars</h5>
+          <h5 className="card-title"style={{ color: "#1a712fff", fontWeight: "bold" }} >Manage Cars</h5>
           <form className="row g-2" onSubmit={addOrUpdateCar}>
             <div className="col-md-2">
               <input className="form-control" name="carId" value={carForm.carId} onChange={onCarChange} type="number" min={5} max={99} required />
@@ -93,7 +97,7 @@ export default function AdminDashboard() {
               </select>
             </div>
             <div className="col-md-2">
-              <button className="btn btn-primary w-100">Save</button>
+              <button className="btn btn-success w-100">Save</button>
             </div>
           </form>
 
@@ -117,11 +121,67 @@ export default function AdminDashboard() {
       <div className="row g-3">
         <div className="col-lg-6">
           <div className="card h-100"><div className="card-body">
-            <h5 className="card-title">Users</h5>
+            <h5 className="card-title"style={{ color: "#1a712fff", fontWeight: "bold" }} >Users</h5>
+            <div className="d-flex gap-2 mb-3">
+        <button 
+          className="btn btn-sm btn-outline-secondary" 
+          onClick={async()=>setUsers(await getAllUsers())}
+        >
+          All
+        </button>
+
+        {/* Search by ID */}
+        <input 
+          type="number" 
+          className="form-control form-control-sm w-25" 
+          placeholder="User ID" 
+          value={searchId} 
+          onChange={(e)=>setSearchId(e.target.value)} 
+        />
+        <button 
+          className="btn btn-sm btn-outline-success"
+          onClick={async()=>{
+            if(searchId) setUsers([await fetchUserById(searchId)]);
+          }}
+        >
+          Search ID
+        </button>
+
+        {/* Search by Name */}
+        <input 
+          type="text" 
+          className="form-control form-control-sm w-25" 
+          placeholder="Name" 
+          value={searchName} 
+          onChange={(e)=>setSearchName(e.target.value)} 
+        />
+        <button 
+          className="btn btn-sm btn-outline-success"
+          onClick={async()=>{
+            if(searchName) setUsers(await getUserByName(searchName));
+          }}
+        >
+          Search Name
+        </button>
+      </div>
+
             <div className="table-responsive" style={{maxHeight: 260}}>
               <table className="table table-sm table-striped"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th></tr></thead>
                 <tbody>
-                  {users.map(u => (<tr key={u.userId}><td>{u.userId}</td><td>{u.name}</td><td>{u.email}</td><td>{u.role}</td></tr>))}
+                  {users.map(u => (<tr key={u.userId}><td>{u.userId}</td><td>{u.name}</td><td>{u.email}</td><td>{u.role}</td>
+                  <td>
+        <button 
+          className="btn btn-sm btn-outline-danger"
+          onClick={async () => {
+            if (window.confirm(`Are you sure you want to delete ${u.name}?`)) {
+              await deleteUser(u.userId);
+              setUsers(users.filter(user => user.userId !== u.userId)); // refresh UI
+            }
+          }}
+        >
+          Delete
+        </button>
+      </td></tr>))}
                   {users.length === 0 && <tr><td colSpan={4} className="text-center">No users</td></tr>}
                 </tbody>
               </table>
@@ -131,10 +191,10 @@ export default function AdminDashboard() {
 
         <div className="col-lg-6">
           <div className="card h-100"><div className="card-body">
-            <h5 className="card-title">Reservations</h5>
+            <h5 className="card-title"style={{ color: "#1a712fff", fontWeight: "bold" }} >Reservations</h5>
             <div className="d-flex gap-2 mb-2">
-              <button className="btn btn-sm btn-outline-secondary" onClick={async()=>setReservations(await getAllReservations())}>All</button>
-              <button className="btn btn-sm btn-outline-secondary" onClick={async()=>setReservations(await getByReservationGreaterThan(2000))}>Total &gt; 2000</button>
+              <button className="btn btn-sm btn-outline-success" onClick={async()=>setReservations(await getAllReservations())}>All</button>
+              <button className="btn btn-sm btn-outline-success" onClick={async()=>setReservations(await getByReservationGreaterThan(2000))}>Total &gt; 2000</button>
             </div>
             <div className="table-responsive" style={{maxHeight: 260}}>
               <table className="table table-sm table-striped"><thead><tr><th>ID</th><th>User</th><th>Car</th><th>Pickup</th><th>Dropoff</th><th>Total</th><th>Status</th></tr></thead>
@@ -153,10 +213,10 @@ export default function AdminDashboard() {
 
         <div className="col-12">
           <div className="card h-100"><div className="card-body">
-            <h5 className="card-title">Payments</h5>
+            <h5 className="card-title"style={{ color: "#1a712fff", fontWeight: "bold" }} >Payments</h5>
             <div className="d-flex gap-2 mb-2">
-              <button className="btn btn-sm btn-outline-secondary" onClick={async()=>setPayments(await getAllPayments())}>All</button>
-              <button className="btn btn-sm btn-outline-secondary" onClick={async()=>setPayments(await getByMethodAndStatus('CARD','SUCCESS'))}>CARD & SUCCESS</button>
+              <button className="btn btn-sm btn-outline-success" onClick={async()=>setPayments(await getAllPayments())}>All</button>
+              <button className="btn btn-sm btn-outline-success" onClick={async()=>setPayments(await getByMethodAndStatus('CARD','SUCCESS'))}>CARD & SUCCESS</button>
             </div>
             <div className="table-responsive">
               <table className="table table-sm table-striped"><thead><tr><th>ID</th><th>Res</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>

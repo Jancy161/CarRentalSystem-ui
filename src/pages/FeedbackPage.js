@@ -73,7 +73,10 @@ export default function FeedbackPage() {
         {list.map(f => (
           <div key={f.feedbackId} className="list-group-item">
             <div className="d-flex w-100 justify-content-between">
-              <h6 className="mb-1">User #{f.userId} on Car #{f.carId}</h6>
+              {/*<h6>User #{f.userId} on Car #{f.carId}</h6>*/}
+<h6 className="mb-1">
+  User #{f.userId} on Car #{f.carId}
+</h6>
               <span className="badge bg-primary">{f.rating}★</span>
             </div>
             <p className="mb-1">{f.comment}</p>

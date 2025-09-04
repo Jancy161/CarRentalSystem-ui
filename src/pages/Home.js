@@ -70,6 +70,8 @@ export default function Home() {
 import React, { useEffect, useState } from "react";
 import { getAllCars, getAffordableSorted } from "../services/carService";
 import { Link } from "react-router-dom";
+import thar4 from "../assets/thar4.jpg";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
   const [cars, setCars] = useState([]);
@@ -94,29 +96,37 @@ export default function Home() {
   };
 
   return (
-    <div style={{ backgroundColor: '#f1f6fcff', minHeight: '100vh' }}>
-      <div className="container py-4">
+    <div style={{backgroundColor: '#f1f6fcff', minHeight: '100vh' }}>
+      <div className="container-fluid p-0 ">
         {/* Hero Section */}
         <div 
-          className="p-5 mb-5 rounded-4 shadow-lg position-relative overflow-hidden"
+          //className="p-5 mb-5 rounded-4 shadow-lg position-relative overflow-hidden"
+          className="w-100 vh-100 d-flex justify-content-center align-items-center position-relative overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
-            color: 'white'
-          }}
+          backgroundImage: `url(${thar4})`,
+          
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          color: "white"
+        }}
         >
+
+          
           <div className="container-fluid py-4">
-            <div className="row align-items-center">
-              <div className="col-lg-8">
-                <h1 className="display-4 fw-bold mb-3">
-                  Find Your <span style={{ color: '#0d6efd' }}>Perfect Ride</span>
+            <div className="row align-items-center mt-n2">
+              <div className="col-lg-8" style={{ marginTop: "-4rem" }}>
+                <h1 className="display-4 fw-bold mb-3 ">
+                  Find Your <span style={{ color: '#1a712fff' }}>Perfect Ride</span>
                 </h1>
-                <p className="fs-5 mb-4 text-light opacity-75">
+                <p className="fs-5 mb-4 text-light opacity-75" style={{ color: "white",marginTop: "3rem" }}>
                   Browse premium vehicles, make instant reservations, secure payments, and share your experience — all in one seamless platform.
                 </p>
+
                 <Link 
                   to="/cars" 
-                  className="btn btn-primary btn-lg px-4 py-3 shadow"
-                  style={{ fontSize: '1.1rem' }}
+                  className="btn btn-light btn-lg px-4 py-3 shadow"
+                  style={{ fontSize: '1.1rem',marginTop: "6rem" }}
                 >
                   <i className="fas fa-car me-2"></i>
                   Browse Our Fleet
@@ -166,7 +176,7 @@ export default function Home() {
               </div>
               <div className="col-auto">
                 <button 
-                  className="btn btn-outline-primary px-4 py-2 rounded-pill shadow-sm" 
+                  className="btn btn-outline-success px-4 py-2 rounded-pill shadow-sm" 
                   onClick={applyBudget} 
                   disabled={loading}
                   style={{ minWidth: '140px' }}
@@ -202,7 +212,8 @@ export default function Home() {
         )}
 
         {/* Cars Grid */}
-        <div className="row g-4">
+        <div className="row g-4" style={{
+          backgroundColor: '#ddecddff',}}>
           {cars.map((c) => (
             <div key={c.carId} className="col-lg-4 col-md-6">
               <div 
@@ -269,7 +280,7 @@ export default function Home() {
                     <div>
                       <span className="text-muted small">Daily Rate</span>
                       <div className="d-flex align-items-center">
-                        <span className="fs-4 fw-bold text-primary me-1">₹{c.pricePerDay}</span>
+                        <span className="fs-4 fw-bold text-success me-1">₹{c.pricePerDay}</span>
                         <span className="text-muted">/day</span>
                       </div>
                     </div>
@@ -278,7 +289,7 @@ export default function Home() {
 
                 <div className="card-footer bg-transparent border-0 p-4 pt-0">
                   <Link to= "/cars" 
-                    className="btn btn-primary w-100 py-2 rounded-pill shadow-sm"
+                    className="btn btn-success w-100 py-2 rounded-pill shadow-sm"
                     style={{ fontSize: '0.95rem', fontWeight: '500' }}
                   >
                     <i className="fas fa-eye me-2"></i>
@@ -311,7 +322,7 @@ export default function Home() {
                   Try adjusting your budget filter or check back later.
                 </p>
                 <button 
-                  className="btn btn-outline-primary px-4 py-2 rounded-pill"
+                  className="btn btn-outline-success px-4 py-2 rounded-pill"
                   onClick={() => {
                     setBudget(2000);
                     getAllCars().then(setCars);

@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import CarListing from "./pages/CarListing";
 import ReservationPage from "./pages/ReservationPage";
+import MyReservations from "./pages/MyReservations";
 import PaymentPage from "./pages/PaymentPage";
 import FeedbackPage from "./pages/FeedbackPage";
 import UserDashboard from "./pages/UserDashboard";
@@ -43,6 +44,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/myreservations" element={<MyReservations />} />
           <Route
             path="/payments"
             element={

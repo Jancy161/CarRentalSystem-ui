@@ -20,7 +20,9 @@ export default function Login() {
       // Get role via /api/users/getbyemail/{email}
       const email = form.username;
       const users = await fetchUserByEmail(email);
+      const user = users?.[0];//for reserve list
       const role = users?.[0]?.role || "User";
+      localStorage.setItem("user", JSON.stringify(user));//reserve list
       localStorage.setItem("role", role);
       //localStorage.setItem("token", res.data.token);
 
@@ -30,9 +32,8 @@ export default function Login() {
       setMsg({ type: "danger", text: err?.response?.data || "Login failed" });
     } finally { setLoading(false); }
   };
-
   return (
-    <div className="container py-4" style={{maxWidth: 420}}>
+    <div className="container py-4" style={{maxWidth: 420, backgroundColor: '#ddecddff'}}>
       <h2 className="mb-3">Login</h2>
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
       <form onSubmit={submit}>
@@ -44,7 +45,7 @@ export default function Login() {
           <label className="form-label">Password</label>
           <input type="password" name="password" className="form-control" value={form.password} onChange={onChange} required />
         </div>
-        <button className="btn btn-primary w-100" disabled={loading}>{loading ? "Signing in..." : "Login"}</button>
+        <button className="btn btn-success w-100" disabled={loading}>{loading ? "Signing in..." : "Login"}</button>
         <div className="text-center mt-3">
           <a href="#" onClick={(e)=>e.preventDefault()}>Forgot password?</a>
         </div>
