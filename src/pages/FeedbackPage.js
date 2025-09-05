@@ -32,7 +32,7 @@ export default function FeedbackPage() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container py-4" style={{maxWidth: 640,backgroundColor: '#ddecddff'}}>
       <h2>Feedback & Ratings</h2>
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
 

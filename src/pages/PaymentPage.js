@@ -18,7 +18,7 @@ export default function PaymentPage() {
   };
 
   return (
-    <div className="container py-4" style={{maxWidth: 640}}>
+    <div className="container py-4" style={{maxWidth: 640,backgroundColor: '#ddecddff'}}>
       <h2>Make Payment</h2>
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
       <form onSubmit={submit} className="row g-3">
@@ -49,7 +49,7 @@ export default function PaymentPage() {
           </select>
         </div>
         <div className="col-12">
-          <button className="btn btn-primary">Submit Payment</button>
+          <button className="btn btn-success">Submit Payment</button>
         </div>
       </form>
     </div>

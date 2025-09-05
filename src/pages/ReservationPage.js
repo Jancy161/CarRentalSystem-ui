@@ -36,7 +36,8 @@ export default function ReservationPage() {
   };
 
   return (
-    <div className="container py-4" style={{maxWidth: 720}}>
+    <div className="container py-4" style={{maxWidth: 720, backgroundColor: '#ddecddff'}}>
+
       <h2>Reserve Car</h2>
       {car && <div className="alert alert-secondary">{car.brand} {car.model} — ₹{car.pricePerDay}/day</div>}
       {msg && <div className={`alert alert-${msg.type}`}>{msg.text}</div>}
@@ -78,7 +79,7 @@ export default function ReservationPage() {
           </select>
         </div>
         <div className="col-12">
-          <button className="btn btn-primary">Create Reservation</button>
+          <button className="btn btn-success">Create Reservation</button>
         </div>
       </form>
     </div>

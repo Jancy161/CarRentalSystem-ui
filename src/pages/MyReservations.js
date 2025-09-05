@@ -1,76 +1,165 @@
-import React, { useEffect, useState } from "react";
-import { getReservationByUserId, deleteReservationById } from "../services/reservationService";
+/*import React, { useEffect, useState } from "react";
+import { getReservationsByUserId, cancelReservation, updateReservation } from "../services/reservationService";
 
 export default function MyReservations() {
   const [reservations, setReservations] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // get logged in user from localStorage
-  const storedUser = JSON.parse(localStorage.getItem("user")); 
-  const loggedInUserId = storedUser?.userId;  // make sure your backend gives "userId"
-
+   // ✅ get userId safely
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.userId;
+  
   useEffect(() => {
-    async function fetchData() {
-      try {
-        if (!loggedInUserId) {
-          console.error("No logged in user found.");
-          setLoading(false);
-          return;
-        }
+    if (userId) load();
+  }, []);
 
-        const res = await getReservationByUserId(loggedInUserId);
-        setReservations(Array.isArray(res) ? res : [res]);
-      } catch (err) {
-        console.error("Error fetching reservations:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [loggedInUserId]);
-
-  const handleDelete = async (reservationId) => {
-    if (window.confirm("Are you sure you want to delete this reservation?")) {
-      try {
-        await deleteReservationById(reservationId);
-        setReservations(reservations.filter(r => r.reservationId !== reservationId));
-        alert("Reservation deleted successfully!");
-      } catch (err) {
-        console.error("Error deleting reservation:", err);
-        alert("Failed to delete reservation.");
-      }
-    }
+  const load = async () => {
+    const userId = localStorage.getItem("userId");
+    const data = await getReservationsByUserId(userId);
+    setReservations(data);
   };
 
-  if (loading) return <p>Loading reservations...</p>;
+  const handleCancel = async (id) => {
+    await cancelReservation(id);
+    load();
+  };
 
   return (
     <div className="container py-4">
-      <h2>My Reservations</h2>
-      {reservations.length === 0 ? (
-        <p>No reservations found.</p>
-      ) : (
-        <div className="row">
-          {reservations.map(res => (
-            <div key={res.reservationId} className="col-md-4 mb-3">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">Reservation #{res.reservationId}</h5>
-                  <p><strong>Car:</strong> {res.car?.model}</p>
-                  <p><strong>Pickup:</strong> {res.pickupDate}</p>
-                  <p><strong>Dropoff:</strong> {res.dropoffDate}</p>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDelete(res.reservationId)}
-                  >
-                    Delete Reservation
+      <h3>My Reservations</h3>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th><th>Car</th><th>Pickup</th><th>Dropoff</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reservations.map(r => (
+            <tr key={r.reservationId}>
+              <td>{r.reservationId}</td>
+              <td>{r.car?.model}</td>
+              <td>{r.pickupDate}</td>
+              <td>{r.dropoffDate}</td>
+              <td>{r.status}</td>
+              <td>
+                {r.status === "ACTIVE" && (
+                  <button className="btn btn-sm btn-danger" onClick={() => handleCancel(r.reservationId)}>
+                    Cancel
                   </button>
-                </div>
-              </div>
-            </div>
+                )}
+              </td>
+            </tr>
           ))}
-        </div>
-      )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+*/
+import React, { useEffect, useState } from "react";
+import { getReservationsByUserId, cancelReservation, updateReservation } from "../services/reservationService";
+import { getCarById } from "../services/carService";  
+export default function MyReservations() {
+  const [reservations, setReservations] = useState([]);
+
+  // ✅ get user safely from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?.userId;
+
+  useEffect(() => {
+    if (userId) loadReservations();
+  }, [userId]);
+
+  const loadReservations = async () => {
+    try {
+      const data = await getReservationsByUserId(userId);
+      // Fetch car details 
+       // enrich each reservation with car details
+     /* const enriched = await Promise.all(
+  data.map(async (res) => {
+    if (!res.car) {
+      try {
+        // fetch full reservation details
+        const fullRes = await getReservationsByUserId(res.reservationId);
+        return { ...res, car: fullRes.car };   // ✅ now car.model exists
+      } catch (err) {
+        console.error(`Failed to fetch reservation ${res.reservationId}`, err);
+        return res;
+      }
+    }
+    return res;
+  })
+);
+*/
+      setReservations(data);
+    } catch (err) {
+      console.error("Failed to load reservations:", err);
+    }
+  };
+
+  const handleCancel = async (reservationId) => {
+    try {
+      await cancelReservation(reservationId);
+      loadReservations();
+    } catch (err) {
+      console.error("Cancel failed:", err);
+    }
+  };
+
+  const handleModify = async (res) => {
+    // Example: extend dropoff date by 1 day
+    const updated = { ...res, dropoffDate: "2025-09-10" }; // replace with form input later
+    try {
+      await updateReservation(updated);
+      loadReservations();
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
+  return (
+    <div className="container py-4">
+      <h3>My Reservations</h3>
+      <table className="table table-bordered table-hover">
+        <thead className="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Car</th>
+            <th>Pickup</th>
+            <th>Dropoff</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reservations.map((r) => (
+            <tr key={r.reservationId}>
+              <td>{r.reservationId}</td>
+
+              <td>{r.carModel}</td>
+              <td>{r.pickupDate}</td>
+              <td>{r.dropoffDate}</td>
+              <td>{r.status}</td>
+              <td>
+                {r.status === "ACTIVE" && (
+                  <>
+                    <button
+                      className="btn btn-sm btn-warning me-2"
+                      onClick={() => handleModify(r)}
+                    >
+                      Modify
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => handleCancel(r.reservationId)}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
