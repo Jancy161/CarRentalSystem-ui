@@ -44,6 +44,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/payments/:reservationId" element={<PaymentPage />} />
+
           <Route path="/myreservations" element={<MyReservations />} />
           <Route
             path="/payments"

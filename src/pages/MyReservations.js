@@ -98,12 +98,13 @@ export default function MyReservations() {
   const handleCancel = async (reservationId) => {
     try {
       await cancelReservation(reservationId);
+       alert("Your reservation is cancelled. Amount will be refunded to your registered bank account/UPI within 24 hrs.");
       loadReservations();
     } catch (err) {
       console.error("Cancel failed:", err);
     }
   };
-
+/*
   const handleModify = async (res) => {
     // Example: extend dropoff date by 1 day
     const updated = { ...res, dropoffDate: "2025-09-10" }; // replace with form input later
@@ -114,7 +115,7 @@ export default function MyReservations() {
       console.error("Update failed:", err);
     }
   };
-
+*/
   return (
     <div className="container py-4">
       <h3>My Reservations</h3>
@@ -141,12 +142,12 @@ export default function MyReservations() {
               <td>
                 {r.status === "ACTIVE" && (
                   <>
-                    <button
+                    {/*<button
                       className="btn btn-sm btn-warning me-2"
                       onClick={() => handleModify(r)}
                     >
                       Modify
-                    </button>
+                    </button> */}
                     <button
                       className="btn btn-sm btn-danger"
                       onClick={() => handleCancel(r.reservationId)}

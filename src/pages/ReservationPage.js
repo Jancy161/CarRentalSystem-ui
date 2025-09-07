@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { addReservation } from "../services/reservationService";
+import { useNavigate } from "react-router-dom";
+
 
 export default function ReservationPage() {
   const location = useLocation();
@@ -24,12 +26,14 @@ export default function ReservationPage() {
     const price = car?.pricePerDay || 0;
     setForm((f) => ({ ...f, totalAmount: Number(price) }));
   };
-
+  const navigate = useNavigate();
   const submit = async (e) => {
     e.preventDefault();
     try {
       const data = await addReservation(form);
       setMsg({ type: "success", text: `Reservation created (ID: ${data.reservationId})` });
+       // ✅ Redirect to payments page with reservationId
+      navigate(`/payments/${data.reservationId}`);
     } catch (err) {
       setMsg({ type: "danger", text: err?.response?.data || "Failed to create reservation" });
     }
